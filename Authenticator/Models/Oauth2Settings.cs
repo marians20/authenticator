@@ -2,6 +2,8 @@
 //     Copyright (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
 
+using Microsoft.Extensions.Configuration;
+
 namespace Authenticator.Models;
 
 /// <summary>
@@ -9,6 +11,18 @@ namespace Authenticator.Models;
 /// </summary>
 public sealed class Oauth2Settings
 {
+    public static Oauth2Settings ReadFromConfig(IConfiguration configuration)
+    {
+        var oauth2Settings = configuration.GetSection("RiseFeedbackSdk:OAuth2")
+            .Get<Oauth2Settings>();
+
+        if (string.IsNullOrEmpty(oauth2Settings.ClientSecret))
+        {
+            oauth2Settings.ClientSecret = configuration["Oauth2:ClientSecret"];
+        }
+
+        return oauth2Settings;
+    }
     /// <summary>
     /// AuthServer
     /// </summary>

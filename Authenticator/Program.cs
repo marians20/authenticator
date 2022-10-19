@@ -6,8 +6,13 @@ using Authenticator.Models;
 using Authenticator.Services;
 using Microsoft.Extensions.Configuration;
 
-var configuration = new ConfigurationBuilder().AddUserSecrets(typeof(Program).Assembly).Build();
-var oauth2Settings = configuration.GetSection("RiseFeedbackSdk:OAuth2").Get<Oauth2Settings>();
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .AddUserSecrets(typeof(Program).Assembly)
+    .Build();
+
+var oauth2Settings = Oauth2Settings.ReadFromConfig(configuration);
+
 var auth = new ClientCredentialsFlowTokenRetriever(oauth2Settings);
 var token = await auth.GetTokenAsync();
 var (principal, jwtToken) = token.ValidateJwt();

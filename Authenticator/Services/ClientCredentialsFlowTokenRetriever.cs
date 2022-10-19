@@ -4,7 +4,6 @@
 
 using Authenticator.Models;
 using Authenticator.Services.Abstractions;
-using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Client;
 
 namespace Authenticator.Services;
